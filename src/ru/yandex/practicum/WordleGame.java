@@ -43,7 +43,7 @@ public class WordleGame {
         return !guesses.isEmpty() && guesses.get(guesses.size() - 1).equals(answer);
     }
 
-    public String makeMove(String input) throws WordleException {
+    public String makeMove(String input) {
         if (input.isBlank()) {
             return suggest();
         }

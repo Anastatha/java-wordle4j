@@ -11,8 +11,12 @@ import java.util.Random;
     также этот класс может содержать рутинные функции по сравнению слов, букв и т.д.
  */
 
-
 public class WordleDictionary {
+    public static final int WORD_LENGTH = 5;
+    private static final char EXACT = '+';
+    private static final char PRESENT = '^';
+    private static final char ABSENT = '-';
+
     private final List<String> words;
 
     public WordleDictionary(List<String> words) {
@@ -32,32 +36,35 @@ public class WordleDictionary {
     }
 
     public static String normalize(String word) {
-        return word.toLowerCase(Locale.ROOT).replace('ё', 'е');
+        if (word == null) {
+            return "";
+        }
+        return word.trim().toLowerCase(Locale.ROOT).replace('ё', 'е');
     }
 
     public static String analyze(String guess, String answer) {
-        char[] result = new char[5];
-        boolean[] used = new boolean[5];
+        char[] result = new char[WORD_LENGTH];
+        boolean[] used = new boolean[WORD_LENGTH];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < WORD_LENGTH; i++) {
             if (guess.charAt(i) == answer.charAt(i)) {
-                result[i] = '+';
+                result[i] = EXACT;
                 used[i] = true;
             }
         }
 
-        for (int i = 0; i < 5; i++) {
-            if (result[i] == '+') continue;
+        for (int i = 0; i < WORD_LENGTH; i++) {
+            if (result[i] == EXACT) continue;
             char c = guess.charAt(i);
             boolean found = false;
-            for (int j = 0; j < 5; j++) {
+            for (int j = 0; j < WORD_LENGTH; j++) {
                 if (!used[j] && answer.charAt(j) == c) {
                     found = true;
                     used[j] = true;
                     break;
                 }
             }
-            result[i] = found ? '^' : '-';
+            result[i] = found ? PRESENT : ABSENT;
         }
 
         return new String(result);

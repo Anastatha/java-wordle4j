@@ -20,7 +20,7 @@ public class WordleDictionaryLoader {
         this.log = log;
     }
 
-    public WordleDictionary load(String fileName) {
+    public WordleDictionary load(String fileName) throws DictionaryLoadException {
         List<String> result = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(
@@ -30,7 +30,7 @@ public class WordleDictionaryLoader {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                String word = WordleDictionary.normalize(line.trim());
+                String word = WordleDictionary.normalize(line);
                 if (word.length() == 5 && word.chars().allMatch(Character::isLetter)) {
                     result.add(word);
                 }
